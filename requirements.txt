@@ -1,0 +1,5 @@
+telethon
+aiohttp
+ruamel.yaml
+bs4
+tld

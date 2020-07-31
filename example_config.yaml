@@ -1,0 +1,26 @@
+# Telegram configuration
+telegram:
+  #App ID and Hash from my.telegram.org
+  api_id: 1234
+  api_hash: 4p1h4sh
+  # Bot token from @BotFather
+  token: 12345:t0k3b
+
+# Spamwatch credentials
+spamwatch:
+  token: abcd~1234ABCD
+
+# Bot configuration
+bot:
+  # List of allowed chats ids.
+  allowed_chats:
+    - -1001361570927
+    - -1001374518507
+    - -1001195021050
+    - -1001375022479
+    - -1001398868273
+    # The chat id where all the bugs and suggestions are sent after confirmation
+  suggesion_chat: -1001398868273
+
+  # Where the bot should check for the dispenser hook. In aurora is used to retrieve anonymous emails to use with AuroraStore.
+  dispenser_url: http://auroraoss.in:8080
