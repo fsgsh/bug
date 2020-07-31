@@ -13,6 +13,7 @@ from ..handlers.commandhandler import CommandHandler
 
 @CommandHandler.handler(command="suggestion", chats=config.bot.allowed_chats)
 async def add_suggestion(event):
+    """Users can use this to make suggestions related to the Aurora Apps. Their suggestion will be sent to a channel if approved."""
     if not event.is_reply and not event.file and len(event.text.split()) == 1:
         return await event.delete()
     msg = event.message
@@ -24,6 +25,7 @@ async def add_suggestion(event):
 
 @CommandHandler.handler(command="bug", chats=config.bot.allowed_chats)
 async def add_bug(event):
+    """Users can use this to report bugs related to the Aurora Apps. Their report will be sent to a channel if approved."""
     if not event.is_reply and not event.file and len(event.text.split()) == 1:
         return await event.delete()
     msg = event.message
@@ -35,6 +37,7 @@ async def add_bug(event):
 
 @bot.on(CallbackQuery)
 async def review(event):
+    """Buttons for admins to approve or reject a bug/suggestion"""
     if event.data.decode() not in [
             "appsug", "appbug", "ignoresug", "ignorebug", "mark"]:
         return
@@ -66,7 +69,6 @@ async def review(event):
     approved_format = "{} from {} in {} \n\n{} \n\nApproved by {} at `{}`\nStatus: Pending ...".format(
         "Suggestion" if is_suggestion else "Bug", by_user, in_chat, text, by_admin, at_time)
 
-    # Forward
     await bot.send_message(config.bot.suggesion_chat, message=approved_format, file=file,
                            buttons=[Button.inline("Mark As Solved!", "mark")])
     if is_suggestion:

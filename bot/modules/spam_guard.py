@@ -14,6 +14,9 @@ BLACKLIST = [line.rstrip('\n')
 
 @bot.on(NewMessage(func=lambda x: not x.is_private))
 async def spam_guard(event):
+    """Checks if the user sends any type of link, and compares it against the blacklisted domains.
+        If the domain is blacklisted the user will be muted for 5 minutes
+    """
     if event.entities:
         is_spam = False
         urls = []

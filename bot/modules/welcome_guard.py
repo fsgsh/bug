@@ -30,6 +30,8 @@ JOINED_USERS: dict = {}
 
 @JoinHandler.handler()
 async def welcome(event):
+    """Mutes the user upon joining untill the "Click Me" button is pressed. If the user fails to press the button in withing 5 minutes
+        the respective user will be kicked"""
     global JOINED_USERS
     chat = await event.get_chat()
     user = await event.get_user()
@@ -57,6 +59,7 @@ spamwatch = SpamWatchClinet()
 
 @bot.on(CallbackQuery)
 async def confirm_human(event):
+    """When the joined user clicks this button he will be unmuted."""
     data = event.data.decode()
     if data == "confirmhuman":
         clicked = await event.get_sender()
