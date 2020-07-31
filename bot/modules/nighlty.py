@@ -34,7 +34,7 @@ async def get_nightly(event):
                                 date.text, "%Y-%m-%d %H:%M"): version.text})
                         except ValueError:
                             pass
-                latest_date = sorted(nightlies.keys())[0]
+                latest_date = sorted(nightlies.keys(), reverse=True)[0]
                 latest_version = nightlies[latest_date]
                 async with session.get(f"{url}{latest_version}") as apk:
                     await bot.send_file(event.chat, await apk.read(), caption=f"**Aurora Nightly uploaded at** `{latest_date.strftime('%Y-%m-%d %H:%M')}`",
