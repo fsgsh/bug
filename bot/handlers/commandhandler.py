@@ -1,4 +1,8 @@
+import inspect
+import os
 import re
+import sys
+from datetime import datetime
 from typing import Callable, List
 
 from telethon.events import NewMessage
@@ -41,7 +45,33 @@ class CommandHandler:
                     me = await bot.get_me()
                     return await event.reply(f"Contact me in PM for {command.title()} !",
                                              buttons=[Button.url(command.title(), f"http://t.me/{me.username}?start={command}")])
-                await f(event)
+                try:
+                    await f(event)
+                except Exception as e:
+                    __lgw_marker_local__ = 0
+                    exc_time = datetime.now().strftime("%m_%d_%H:%M:%S")
+                    file_name = f"{exc_time}_{type(e).__name__}_{f.__name__}"
+                    if not os.path.exists('logs/'):
+                        os.mkdir('logs/')
+                        with open(f"logs/{file_name}.log", "a") as log_file:
+                            log_file.write(f"Exception thrown, {type(e)}: {str(e)}\n")
+                            frames = inspect.getinnerframes(sys.exc_info()[2])
+                            for frame_info in reversed(frames):
+                                f_locals = frame_info[0].f_locals
+                                if "__lgw_marker_local__" in f_locals:
+                                    continue
+
+                                log_file.write(f"File{frame_info[1]},"
+                                               f"line {frame_info[2]}"
+                                               f" in {frame_info[3]}\n"
+                                               f"{frame_info[4][0]}\n")
+
+                                for k, v in f_locals.items():
+                                    log_to_str = str(v).replace("\n", "\\n")
+                                    log_file.write(f"    {k} = {log_to_str}\n")
+                            log_file.write("\n")
+
+                    raise
         return warper
 
     @staticmethod
