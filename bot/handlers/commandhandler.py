@@ -54,7 +54,8 @@ class CommandHandler:
                     if not os.path.exists('logs/'):
                         os.mkdir('logs/')
                     with open(f"logs/{file_name}.log", "a") as log_file:
-                        log_file.write(f"Exception thrown, {type(e)}: {str(e)}\n")
+                        log_file.write(
+                            f"Exception thrown, {type(e)}: {str(e)}\n")
                         frames = inspect.getinnerframes(sys.exc_info()[2])
                         for frame_info in reversed(frames):
                             f_locals = frame_info[0].f_locals

@@ -11,4 +11,6 @@ class JoinHandler:
             async def execute(event):
                 if event.user_joined or event.user_added:
                     await f(event)
+                else:
+                    await event.delete()
         return warper

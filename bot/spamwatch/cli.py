@@ -8,7 +8,8 @@ class SpamWatchClinet:
     def __init__(self):
         self._host = "https://api.spamwat.ch"
         self.token = config.spamwatch.token
-        self.session: aiohttp.ClientSession = aiohttp.ClientSession(headers={"Authorization": f"Bearer {self.token}"})
+        self.session: aiohttp.ClientSession = aiohttp.ClientSession(
+            headers={"Authorization": f"Bearer {self.token}"})
 
     async def destroy(self):
         if self.session is not None:
