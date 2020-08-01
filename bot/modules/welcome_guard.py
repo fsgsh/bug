@@ -113,6 +113,13 @@ async def confirm_human(event):
                                        send_polls=False,
                                        send_stickers=False)
         else:
+            await bot.edit_permissions(chat, user, send_messages=True,
+                                       send_gifs=True,
+                                       send_inline=True,
+                                       send_media=True,
+                                       send_polls=True,
+                                       send_stickers=True
+                                       )
             service = await (await event.get_message()).get_reply_message()
             if service:
                 await service.delete()
