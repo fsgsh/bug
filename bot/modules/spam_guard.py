@@ -3,7 +3,8 @@ import re
 
 from telethon.errors.rpcerrorlist import UserAdminInvalidError
 from telethon.events import NewMessage
-from telethon.tl.types import MessageEntityTextUrl, MessageEntityUrl
+from telethon.tl.types import MessageEntityTextUrl, MessageEntityUrl, ChannelParticipantCreator, ChannelParticipantAdmin
+from telethon.tl.functions.channels import GetParticipantRequest
 from tld import get_fld
 
 from .. import bot
@@ -35,10 +36,12 @@ async def spam_guard(event):
                 is_spam = True
                 continue
         if is_spam:
-            await event.delete()
             chat = await event.get_chat()
             user = await event.get_sender()
-            print(user.stringify())
+            result = await bot(GetParticipantRequest(chat, user))
+            if isinstance(result.participant, (ChannelParticipantCreator, ChannelParticipantAdmin)):
+                return
+            await event.delete()
             try:
                 await bot.edit_permissions(chat, user, send_messages=False, until_date=datetime.timedelta(minutes=5))
                 await bot.send_message(chat, f"**Restricted **[{user.first_name}](tg://user?id={user.id}) **for `5` minutes**\n\n**Reason:** __Use of restricted url!!__")
