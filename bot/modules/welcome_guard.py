@@ -66,7 +66,7 @@ async def welcome(event):
                                 buttons=[Button.inline("Click me!", "verify|" + str(user.id))])
         await bot.edit_permissions(chat, user, until_date=None, send_messages=False)
         try:
-            await joined_user.wait_for_confirm(10)
+            await joined_user.wait_for_confirm(300)
             if chat.id in JOINED_USERS.keys():
                 del JOINED_USERS[user.id][chat.id]
         except asyncio.TimeoutError:
