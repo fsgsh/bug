@@ -35,9 +35,10 @@ async def spam_guard(event):
                 url = "http://" + url
             try:
                 fld = get_fld(url)
+                if fld in BLACKLIST:
+                    is_spam = True
+                    continue
             except TldDomainNotFound:
-                return await event.delete()
-            if get_fld(url) in BLACKLIST:
                 is_spam = True
                 continue
         if is_spam:
