@@ -4,6 +4,7 @@ import re
 from telethon.events import CallbackQuery
 from telethon.tl.custom import Button
 from telethon.tl.functions.channels import GetParticipantRequest
+from telethon.errors.rpcerrorlist import UserNotParticipantError
 from telethon.tl.types import (ChannelParticipantAdmin,
                                ChannelParticipantCreator)
 
@@ -42,7 +43,10 @@ async def review(event):
             "appsug", "appbug", "ignoresug", "ignorebug", "mark"]:
         return
     sender = await event.get_sender()
-    participant = await bot(GetParticipantRequest(event.chat_id, sender.id))
+    try:
+        participant = await bot(GetParticipantRequest(event.chat_id, sender.id))
+    except UserNotParticipantError:
+        return event.answer()
     if not isinstance(
             participant.participant,
             (ChannelParticipantAdmin, ChannelParticipantCreator)):
