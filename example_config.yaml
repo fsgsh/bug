@@ -22,5 +22,7 @@ bot:
     # The chat id where all the bugs and suggestions are sent after confirmation
   suggesion_chat: -1001398868273
 
-  # Where the bot should check for the dispenser hook. In aurora is used to retrieve anonymous emails to use with AuroraStore.
-  dispenser_url: http://auroraoss.in:8080
+  # Where the bot should check for the dispenser hook(s). In aurora is used to retrieve anonymous emails to use with AuroraStore.
+  dispenser_urls:
+    - http://auroraoss.com:8080
+    - http://auroraoss.in:8080
