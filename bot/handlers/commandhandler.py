@@ -48,6 +48,8 @@ class CommandHandler:
                                              buttons=[Button.url(command.title(), f"http://t.me/{me.username}?start={command}")])
                 try:
                     await f(event)
+                    if len(event.next.split()) <= 1:
+                        await event.delete()
                 except Exception as e:
                     exc_time = datetime.now().strftime("%m_%d_%H:%M:%S")
                     file_name = f"{exc_time}_{type(e).__name__}_{f.__name__}"
