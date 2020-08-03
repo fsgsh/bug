@@ -2,6 +2,7 @@ import datetime
 import re
 
 from telethon.errors.rpcerrorlist import UserAdminInvalidError
+from tld.exceptions import TldDomainNotFound
 from telethon.events import NewMessage
 from telethon.tl.types import MessageEntityTextUrl, MessageEntityUrl, ChannelParticipantCreator, ChannelParticipantAdmin
 from telethon.tl.functions.channels import GetParticipantRequest
@@ -9,7 +10,7 @@ from tld import get_fld
 
 from .. import bot
 
-BLACKLIST = [line.rstrip('\n')
+BLACKLIST = [line.rstrip('\n').lower()
              for line in open("domains.blacklist", "r").readlines()]
 
 
@@ -32,6 +33,10 @@ async def spam_guard(event):
             if not url.startswith(
                     "http://") and not url.startswith("https://"):
                 url = "http://" + url
+            try:
+                fld = get_fld(url)
+            except TldDomainNotFound:
+                return await event.delete()
             if get_fld(url) in BLACKLIST:
                 is_spam = True
                 continue
