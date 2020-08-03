@@ -90,37 +90,38 @@ async def confirm_human(event):
             return await event.answer("Who are you again?")
         chat = await event.get_chat()
         is_banned = await spamwatch.get_ban(user.id)
-        wait_time = JOINED_USERS[user.id][chat.id].date + \
-            datetime.timedelta(seconds=5)
-        passed = wait_time - datetime.datetime.now()
-        if passed.seconds <= 5:
-            return await event.answer(f"Whoha, too fast. You need to wait {passed.seconds} seconds before pressing the button.")
+        if chat.id in JOINED_USERS[user.id]:
+            wait_time = JOINED_USERS[user.id][chat.id].date + \
+                datetime.timedelta(seconds=5)
+            passed = wait_time - datetime.datetime.now()
+            if passed.seconds <= 5:
+                return await event.answer(f"Whoha, too fast. You need to wait {passed.seconds} seconds before pressing the button.")
 
-        await JOINED_USERS[user.id][chat.id].confirm()
-        del JOINED_USERS[user.id][chat.id]
-        if is_banned:
-            await event.edit(
-                f"""
-                [{user.first_name}](tg://user?id={user.id}) I'm afraid your account is marked as suspicious, for the groups safety you'll be able to send only text messages for the next 48 hours.
-                \n**Reason:** __{is_banned.reason}__
-                """
-            )
-            await bot.edit_permissions(chat, user, until_date=datetime.timedelta(hours=48),
-                                       send_games=False,
-                                       send_gifs=False,
-                                       send_inline=False,
-                                       send_media=False,
-                                       send_polls=False,
-                                       send_stickers=False)
-        else:
-            await bot.edit_permissions(chat, user, send_messages=True,
-                                       send_gifs=True,
-                                       send_inline=True,
-                                       send_media=True,
-                                       send_polls=True,
-                                       send_stickers=True
-                                       )
-            service = await (await event.get_message()).get_reply_message()
-            if service:
-                await service.delete()
-            await event.delete()
+            await JOINED_USERS[user.id][chat.id].confirm()
+            del JOINED_USERS[user.id][chat.id]
+            if is_banned:
+                await event.edit(
+                    f"""
+                    [{user.first_name}](tg://user?id={user.id}) I'm afraid your account is marked as suspicious, for the groups safety you'll be able to send only text messages for the next 48 hours.
+                    \n**Reason:** __{is_banned.reason}__
+                    """
+                )
+                await bot.edit_permissions(chat, user, until_date=datetime.timedelta(hours=48),
+                                           send_games=False,
+                                           send_gifs=False,
+                                           send_inline=False,
+                                           send_media=False,
+                                           send_polls=False,
+                                           send_stickers=False)
+            else:
+                await bot.edit_permissions(chat, user, send_messages=True,
+                                           send_gifs=True,
+                                           send_inline=True,
+                                           send_media=True,
+                                           send_polls=True,
+                                           send_stickers=True
+                                           )
+                service = await (await event.get_message()).get_reply_message()
+                if service:
+                    await service.delete()
+                await event.delete()
