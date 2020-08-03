@@ -102,17 +102,12 @@ async def confirm_human(event):
             if is_banned:
                 await event.edit(
                     f"""
-                    [{user.first_name}](tg://user?id={user.id}) I'm afraid your account is marked as suspicious, for the groups safety you'll be able to send only text messages for the next 48 hours.
+                    [{user.first_name}](tg://user?id={user.id}) I'm afraid your account is marked as suspicious, for the groups safety you'll be not able to send any messages for the next 24 hours.
                     \n**Reason:** __{is_banned.reason}__
                     """
                 )
-                await bot.edit_permissions(chat, user, until_date=datetime.timedelta(hours=48),
-                                           send_games=False,
-                                           send_gifs=False,
-                                           send_inline=False,
-                                           send_media=False,
-                                           send_polls=False,
-                                           send_stickers=False)
+                await bot.edit_permissions(chat, user, until_date=datetime.timedelta(hours=24),
+                                           send_messages=False)
             else:
                 await bot.edit_permissions(chat, user, send_messages=True,
                                            send_gifs=True,
