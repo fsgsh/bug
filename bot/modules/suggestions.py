@@ -6,7 +6,9 @@ from telethon.tl.custom import Button
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.errors.rpcerrorlist import UserNotParticipantError
 from telethon.tl.types import (ChannelParticipantAdmin,
-                               ChannelParticipantCreator)
+                               ChannelParticipantCreator,
+                               MessageMediaWebPage,
+                               MessageMediaUnsupported)
 
 from .. import bot, config
 from ..handlers.commandhandler import CommandHandler
@@ -66,6 +68,8 @@ async def review(event):
     in_chat = "[{}](https://t.me/{})".format(rep_msg.chat.title,
                                              rep_msg.chat.username)
     file = rep_msg.media or rep_msg.document
+    if isinstance(file, (MessageMediaWebPage, MessageMediaUnsupported)):
+        file = None
     text = rep_msg.text
     is_suggestion = event.data.decode() == "appsug"
     if text:
