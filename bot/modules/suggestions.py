@@ -34,7 +34,7 @@ async def add_bug(event):
     msg = event.message
     if event.is_reply:
         msg = await event.get_reply_message()
-    await msg.reply("Thanks for your suggestion. The admins of this group will review it and approve it if needed!",
+    await msg.reply("Thanks for your bug report. The admins of this group will review it and approve it if needed!",
                     buttons=[Button.inline("Approve", "appbug"), Button.inline("Reject", "ignorebug")])
 
 
@@ -48,7 +48,7 @@ async def review(event):
     try:
         participant = await bot(GetParticipantRequest(event.chat_id, sender.id))
     except UserNotParticipantError:
-        return event.answer()
+        return await event.answer()
     if not isinstance(
             participant.participant,
             (ChannelParticipantAdmin, ChannelParticipantCreator)):
