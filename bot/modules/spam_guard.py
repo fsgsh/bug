@@ -56,7 +56,6 @@ async def spam_guard(event):
                 url = ent.url
             if isinstance(ent, MessageEntityUrl):
                 url = event.text[ent.offset:].split()[0]
-            print(url, bool(url))
             if not bool(url):
                 return
             chat = await event.get_chat()
