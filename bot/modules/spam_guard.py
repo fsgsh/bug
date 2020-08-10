@@ -63,10 +63,10 @@ async def spam_guard(event):
             check = check_url(url)
             fld = _get_fld(url)
             if check or fld not in TELEGRAM_DOMAINS:
-                await event.delete()
                 try:
                     result = await bot(GetParticipantRequest(chat, user))
                     if not isinstance(result.participant, (ChannelParticipantCreator, ChannelParticipantAdmin)):
+                        await event.delete()
                         if check:
                             await bot.edit_permissions(chat, user, view_messages=False)
                             await bot.send_message(chat, FORMAT.format(first_name=user.first_name, user_id=user.id))
