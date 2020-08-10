@@ -72,7 +72,7 @@ async def spam_guard(event):
                             await bot.send_message(chat, FORMAT.format(first_name=user.first_name, user_id=user.id))
                         elif chat.id in [1374518507, 1195021050, 1361570927]:
                             await bot.send_message(chat,
-                                                     f"**Deleted message from [{user.first_name}](tg://user?id={user.id})**\n__External links are not allowed in this chat! Please move to__ [OffTopic Chat](https://t.me/AuroraOT)",
+                                                     f"**Deleted message from:** [{user.first_name}](tg://user?id={user.id})\n__External links are not allowed in this chat! Please move to__ [OffTopic Chat](https://t.me/AuroraOT)",
                                                    link_preview=False)
 
                 except UserNotParticipantError:
