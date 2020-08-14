@@ -66,11 +66,12 @@ async def spam_guard(event):
                 try:
                     result = await bot(GetParticipantRequest(chat, user))
                     if not isinstance(result.participant, (ChannelParticipantCreator, ChannelParticipantAdmin)):
-                        await event.delete()
                         if check:
+                            await event.delete()
                             await bot.edit_permissions(chat, user, view_messages=False)
                             await bot.send_message(chat, FORMAT.format(first_name=user.first_name, user_id=user.id))
                         elif chat.id in [1374518507, 1195021050, 1361570927]:
+                            await event.delete()
                             await bot.send_message(chat,
                                                      f"**Deleted message from:** [{user.first_name}](tg://user?id={user.id})\n__External links are not allowed in this chat! Please move to__ [OffTopic Chat](https://t.me/AuroraOT)",
                                                    link_preview=False)
